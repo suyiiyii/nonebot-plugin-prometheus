@@ -12,6 +12,6 @@ dependencies = [
 adapters = [
 
 ]
-plugins = []
-plugin_dirs = ["nonebot_plugin_prometheus/plugins"]
+plugins = ["nonebot_plugin_prometheus"]
+plugin_dirs = []
 builtin_plugins = []
