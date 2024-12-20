@@ -1,0 +1,17 @@
+[project]
+name = "nonebot-plugin-prometheus"
+version = "0.1.0"
+description = "nonebot-plugin-prometheus"
+readme = "README.md"
+requires-python = ">=3.9, <4.0"
+dependencies = [
+    "nonebot2[fastapi]>=2.2.1",
+]
+
+[tool.nonebot]
+adapters = [
+
+]
+plugins = []
+plugin_dirs = ["nonebot_plugin_prometheus/plugins"]
+builtin_plugins = []
