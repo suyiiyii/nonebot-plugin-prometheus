@@ -5,7 +5,6 @@ description = "nonebot-plugin-prometheus"
 readme = "README.md"
 requires-python = ">=3.9, <4.0"
 dependencies = [
-    "nonebot2[fastapi]>=2.2.1",
     "prometheus-client>=0.21.1",
 ]
 
@@ -16,3 +15,10 @@ adapters = [
 plugins = ["nonebot_plugin_prometheus"]
 plugin_dirs = []
 builtin_plugins = []
+
+[dependency-groups]
+dev = [
+    "nonebot2[fastapi]>=2.2.1",
+    "pre-commit>=4.0.1",
+    "ruff>=0.8.4",
+]
