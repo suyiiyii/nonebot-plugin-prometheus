@@ -236,10 +236,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "nonebot2", extra = ["fastapi"] },
+    { name = "prometheus-client" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "nonebot2", extras = ["fastapi"], specifier = ">=2.2.1" }]
+requires-dist = [
+    { name = "nonebot2", extras = ["fastapi"], specifier = ">=2.2.1" },
+    { name = "prometheus-client", specifier = ">=0.21.1" },
+]
 
 [[package]]
 name = "nonebot2"
@@ -263,6 +267,15 @@ wheels = [
 fastapi = [
     { name = "fastapi" },
     { name = "uvicorn", extra = ["standard"] },
+]
+
+[[package]]
+name = "prometheus-client"
+version = "0.21.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/14/7d0f567991f3a9af8d1cd4f619040c93b68f09a02b6d0b6ab1b2d1ded5fe/prometheus_client-0.21.1.tar.gz", hash = "sha256:252505a722ac04b0456be05c05f75f45d760c2911ffc45f2a06bcaed9f3ae3fb", size = 78551 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ff/c2/ab7d37426c179ceb9aeb109a85cda8948bb269b7561a0be870cc656eefe4/prometheus_client-0.21.1-py3-none-any.whl", hash = "sha256:594b45c410d6f4f8888940fe80b5cc2521b305a1fafe1c58609ef715a001f301", size = 54682 },
 ]
 
 [[package]]

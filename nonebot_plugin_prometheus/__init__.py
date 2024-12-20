@@ -10,11 +10,14 @@ __plugin_meta__ = PluginMetadata(
 
 from nonebot import get_driver
 from nonebot.drivers import URL, Request, Response, ASGIMixin, HTTPServerSetup
+from prometheus_client import Counter, generate_latest
+
+counter = Counter("nonebot_metrics_requests", "Total number of requests")
 
 
-async def hello(request: Request) -> Response:
-    return Response(200, content="Hello, world!")
-
+async def metrics(request: Request) -> Response:
+    counter.inc()
+    return Response(200, content=generate_latest().decode())
 
 driver = get_driver()
 if not isinstance(driver, ASGIMixin):
@@ -25,7 +28,7 @@ else:
         HTTPServerSetup(
             path=URL("/metrics"),
             method="GET",
-            name="hello",
-            handle_func=hello,
+            name="metrics",
+            handle_func=metrics,
         )
     )
