@@ -19,7 +19,5 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
-          git add .
-          git commit -m ":bookmark: Release $(uvx --from=toml-cli toml get --toml-path=pyproject.toml project.version)"
-          git tag ${{ env.TAG_NAME }}
+          git tag v$(uvx --from=toml-cli toml get --toml-path=pyproject.toml project.version)
           git push && git push --tags
