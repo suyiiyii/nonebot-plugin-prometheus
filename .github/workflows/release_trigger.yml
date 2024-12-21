@@ -12,6 +12,9 @@ jobs:
         with:
           ref: main
 
+      - uses: ./.github/actions/setup-python
+        name: Setup Python & uv
+
       - name: Push Tag
         run: |
           git config user.name github-actions[bot]

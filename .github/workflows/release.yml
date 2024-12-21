@@ -17,10 +17,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v4
-        with:
-          enable-cache: true
+      - uses: ./.github/actions/setup-python
+        name: Setup Python & uv
 
       - name: Get Version
         id: version
