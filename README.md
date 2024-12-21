@@ -1,4 +1,5 @@
-<!-- markdownlint-disable MD033 MD036 MD041 -->
+from nonebot_plugin_prometheus.metrics import counterfrom nonebot import
+require<!-- markdownlint-disable MD033 MD036 MD041 -->
 
 <p align="center">
   <a href="https://v2.nonebot.dev/"><img src="https://v2.nonebot.dev/logo.png" width="200" height="200" alt="nonebot"></a>
@@ -36,8 +37,42 @@ _✨ NoneBot Prometheus 集成插件 ✨_
 pip install nonebot-plugin-prometheus
 ```
 
-[//]: # ()
-[//]: # (## 接入方式)
+## 接入方式
 
-[//]: # ()
-[//]: # (先在插件代码最前面声明依赖)
+先在插件代码最前面声明依赖
+
+```python
+from nonebot import require
+
+require("nonebot_plugin_prometheus")
+```
+
+然后可以从插件导入相关指标对象使用，详情请参考 [Prometheus Python Client 官方文档](https://prometheus.github.io/client_python/)
+
+```python
+from nonebot_plugin_prometheus import Gauge, Counter, Histogram, Summary
+
+# Request counter
+request_counter = Counter(
+    "request_counter", "The number of requests"
+)
+request_counter.inc()
+```
+
+## 配置
+
+```ini
+# 是否开启 Prometheus 插件
+prometheus_enable = True
+# Prometheus 挂载地址
+prometheus_metrics_path = "/metrics"
+```
+
+> **Note**
+>
+> 使用插件需要支持 ASGI 的驱动器，例如 `fastapi`
+
+## 相关仓库
+
+* [NoneBot2](https://github.com/nonebot/nonebot2)
+* [Prometheus Python Client](https://github.com/prometheus/client_python)
