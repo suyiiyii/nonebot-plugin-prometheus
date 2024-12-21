@@ -280,6 +280,7 @@ name = "nonebot-plugin-prometheus"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "nonebot2" },
     { name = "prometheus-client" },
 ]
 
@@ -291,7 +292,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "prometheus-client", specifier = ">=0.21.1" }]
+requires-dist = [
+    { name = "nonebot2", specifier = ">=2.2.1" },
+    { name = "prometheus-client", specifier = ">=0.21.1" },
+]
 
 [package.metadata.requires-dev]
 dev = [
