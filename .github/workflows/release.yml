@@ -29,7 +29,9 @@ jobs:
 
       - name: Check Version
         if: steps.version.outputs.VERSION != steps.version.outputs.TAG_VERSION
-        run: exit 1
+        run: |
+          echo "Version mismatch: ${{ steps.version.outputs.VERSION }} != ${{ steps.version.outputs.TAG_VERSION }}"
+          exit 1
 
       - name: Build
         run: uv build
