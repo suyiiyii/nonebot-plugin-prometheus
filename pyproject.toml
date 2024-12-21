@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-prometheus"
-version = "0.2.8"
+version = "0.2.9"
 description = "nonebot-plugin-prometheus"
 readme = "README.md"
 requires-python = ">=3.9, <4.0"

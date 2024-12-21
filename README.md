@@ -1,5 +1,4 @@
-from nonebot_plugin_prometheus.metrics import counterfrom nonebot import
-require<!-- markdownlint-disable MD033 MD036 MD041 -->
+<!-- markdownlint-disable MD033 MD036 MD041 -->
 
 <p align="center">
   <a href="https://v2.nonebot.dev/"><img src="https://v2.nonebot.dev/logo.png" width="200" height="200" alt="nonebot"></a>
