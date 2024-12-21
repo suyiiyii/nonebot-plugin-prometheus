@@ -18,9 +18,18 @@ jobs:
       - uses: ./.github/actions/setup-python
         name: Setup Python & uv
 
+      - run: echo "TAG_NAME=v$(uvx --from=toml-cli toml get --toml-path=pyproject.toml project.version)" >> $GITHUB_ENV
+
+      - name: Archive Changelog
+        uses: docker://ghcr.io/nonebot/auto-changelog:master
+        with:
+          archive_regex: '(?<=## )最近更新(?=\n)'
+          archive_title: ${{ env.TAG_NAME }}
+          commit_and_push: false
+
       - name: Push Tag
         run: |
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
-          git tag v$(uvx --from=toml-cli toml get --toml-path=pyproject.toml project.version)
+          git tag ${{ env.TAG_NAME }}
           git push && git push --tags

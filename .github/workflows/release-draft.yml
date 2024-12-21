@@ -21,6 +21,8 @@ jobs:
       # otherwise, read permission is required at least
       pull-requests: write
     steps:
+      - uses: actions/checkout@v4
+
       - uses: release-drafter/release-drafter@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
