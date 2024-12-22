@@ -1,14 +1,14 @@
 <!-- markdownlint-disable MD033 MD036 MD041 -->
 
 <p align="center">
-![nonebot-plugin-prometheus.png](nonebot-plugin-prometheus.png)
+  <a href="https://github.com/suyiiyii/nonebot-plugin-prometheus"><img src="https://github.com/suyiiyii/nonebot-plugin-prometheus/blob/main/nonebot-plugin-prometheus.png" width="200" height="200" alt="nonebot"></a>
 </p>
 
 <div align="center">
 
 # Nonebot Plugin Prometheus
 
-_✨ NoneBot Prometheus 集成插件 ✨_
+_✨ NoneBot Prometheus 监控插件 ✨_
 
 </div>
 
