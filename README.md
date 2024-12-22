@@ -1,9 +1,8 @@
 <!-- markdownlint-disable MD033 MD036 MD041 -->
 
 <p align="center">
-  <a href="https://v2.nonebot.dev/"><img src="https://v2.nonebot.dev/logo.png" width="200" height="200" alt="nonebot"></a>
+![nonebot-plugin-prometheus.png](nonebot-plugin-prometheus.png)
 </p>
-
 
 <div align="center">
 
@@ -70,6 +69,11 @@ prometheus_metrics_path = "/metrics"
 > **Note**
 >
 > 使用插件需要支持 ASGI 的驱动器，例如 `fastapi`
+
+## TODO
+
+* 监控 NoneBot 相关指标
+* 支持通过对话查询指标数据
 
 ## 相关仓库
 
