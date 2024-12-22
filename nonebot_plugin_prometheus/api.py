@@ -18,7 +18,9 @@ def enable_prometheus():
         logger.warning("Prometheus 插件未找到支持 ASGI 的驱动器")
         return
 
-    logger.debug("找到支持 ASGI 的驱动器，Prometheus 插件使用以下配置加载: " + str(plugin_config))
+    logger.debug(
+        "找到支持 ASGI 的驱动器，Prometheus 插件使用以下配置加载: " + str(plugin_config)
+    )
     driver.setup_http_server(
         HTTPServerSetup(
             path=URL(plugin_config.prometheus_metrics_path),
@@ -29,5 +31,10 @@ def enable_prometheus():
     )
 
 
-if plugin_config.prometheus_enable:
-    enable_prometheus()
+driver = get_driver()
+
+
+@driver.on_startup
+def load():
+    if plugin_config.prometheus_enable:
+        enable_prometheus()

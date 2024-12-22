@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-prometheus"
-version = "0.3.0"
+version = "0.3.1"
 description = "nonebot-plugin-prometheus"
 readme = "README.md"
 requires-python = ">=3.9, <4.0"
@@ -19,7 +19,7 @@ builtin_plugins = []
 
 [dependency-groups]
 dev = [
-    "nonebot2[fastapi]>=2.2.1",
+    "nonebot2[fastapi]<3.0.0,>=2.3.3",
     "pre-commit>=4.0.1",
     "ruff>=0.8.4",
 ]
