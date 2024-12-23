@@ -1,9 +1,29 @@
 [project]
 name = "nonebot-plugin-prometheus"
 version = "0.3.2"
-description = "nonebot-plugin-prometheus"
+description = "为 NoneBot 和其他插件提供 Prometheus 监控支持"
 readme = "README.md"
 requires-python = ">=3.9, <4.0"
+license = { file = "LICENSE" }
+keywords = ["nonebot", "nonebot2", "nonebot-plugin", "prometheus"]
+authors = [
+    { name = "suyiiyii", email = "suyiiyii@gmail.com" }
+]
+maintainers = [
+    { name = "suyiiyii", email = "suyiiyii@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
 dependencies = [
     "nonebot2>=2.2.1",
     "prometheus-client>=0.21.1",
