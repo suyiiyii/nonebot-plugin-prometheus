@@ -29,6 +29,11 @@ dependencies = [
     "prometheus-client>=0.21.1",
 ]
 
+[project.urls]
+"Homepage" = "https://github.com/suyiiyii/nonebot-plugin-prometheus"
+"Repository" = "https://github.com/suyiiyii/nonebot-plugin-prometheus"
+"Bug Tracker" = "https://github.com/suyiiyii/nonebot-plugin-prometheus/issues"
+
 [tool.nonebot]
 adapters = [
 
