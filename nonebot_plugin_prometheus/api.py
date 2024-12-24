@@ -1,7 +1,7 @@
 from nonebot import get_driver
 from nonebot.drivers import URL, Request, Response, ASGIMixin, HTTPServerSetup
 from nonebot.log import logger
-from prometheus_client import generate_latest
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from nonebot_plugin_prometheus.config import plugin_config
 from nonebot_plugin_prometheus.metrics import counter
@@ -10,7 +10,7 @@ from nonebot_plugin_prometheus.metrics import counter
 async def metrics(request: Request) -> Response:
     counter.inc()
     return Response(
-        200, headers={"Content-Type": "text/plain"}, content=generate_latest()
+        200, headers={"Content-Type": CONTENT_TYPE_LATEST}, content=generate_latest()
     )
 
 
