@@ -9,7 +9,9 @@ from nonebot_plugin_prometheus.metrics import counter
 
 async def metrics(request: Request) -> Response:
     counter.inc()
-    return Response(200, content=generate_latest())
+    return Response(
+        200, headers={"Content-Type": "text/plain"}, content=generate_latest()
+    )
 
 
 def enable_prometheus():
