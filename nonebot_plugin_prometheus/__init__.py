@@ -17,6 +17,7 @@ __plugin_meta__ = PluginMetadata(
     usage="请参考文档",
     homepage="https://github.com/suyiiyii/nonebot-plugin-prometheus",
     config=Config,
+    supported_adapters=None,
 )
 
 __all__ = [prometheus_client, Counter, Gauge, Histogram, Summary]
