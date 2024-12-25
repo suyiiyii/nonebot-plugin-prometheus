@@ -12,7 +12,6 @@ _✨ NoneBot Prometheus 监控插件 ✨_
 
 </div>
 
-
 <p align="center">
   <a href="https://raw.githubusercontent.com/suyiiyii/nonebot-plugin-prometheus/main/LICENSE">
     <img src="https://img.shields.io/github/license/suyiiyii/nonebot-plugin-prometheus.svg" alt="license">
@@ -24,10 +23,28 @@ _✨ NoneBot Prometheus 监控插件 ✨_
 
 ## ✨功能
 
-* 自动挂载 `/metrics` 路径，提供 Prometheus 监控数据
-* 为其他插件提供统一的数据上报接口
+- 自动挂载 `/metrics` 路径，提供 Prometheus 监控数据
+- 为其他插件提供统一的数据上报接口
 
-## 安装
+## 📦 安装
+
+- 使用 nb-cli
+
+```sh
+nb plugin install nonebot-plugin-prometheus
+```
+
+- 使用 uv
+
+```sh
+uv add nonebot-plugin-prometheus
+```
+
+- 使用 poetry
+
+```sh
+poetry add nonebot-plugin-prometheus
+```
 
 - 使用 pip
 
@@ -35,7 +52,7 @@ _✨ NoneBot Prometheus 监控插件 ✨_
 pip install nonebot-plugin-prometheus
 ```
 
-## 接入方式
+## 🔌接入方式
 
 先在插件代码最前面声明依赖
 
@@ -57,7 +74,7 @@ request_counter = Counter(
 request_counter.inc()
 ```
 
-## 配置
+## 🔧配置
 
 ```ini
 # 是否开启 Prometheus 插件
@@ -70,12 +87,12 @@ prometheus_metrics_path = "/metrics"
 >
 > 使用插件需要支持 ASGI 的驱动器，例如 `fastapi`
 
-## TODO
+## 📝TODO
 
-* 监控 NoneBot 相关指标
-* 支持通过对话查询指标数据
+- 监控 NoneBot 相关指标
+- 支持通过对话查询指标数据
 
 ## 相关仓库
 
-* [NoneBot2](https://github.com/nonebot/nonebot2)
-* [Prometheus Python Client](https://github.com/prometheus/client_python)
+- [NoneBot2](https://github.com/nonebot/nonebot2)
+- [Prometheus Python Client](https://github.com/prometheus/client_python)
