@@ -4,11 +4,11 @@ from nonebot.log import logger
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from nonebot_plugin_prometheus.config import plugin_config
-from nonebot_plugin_prometheus.metrics import counter
+from nonebot_plugin_prometheus.metrics import metrics_request_counter
 
 
 async def metrics(request: Request) -> Response:
-    counter.inc()
+    metrics_request_counter.inc()
     return Response(
         200, headers={"Content-Type": CONTENT_TYPE_LATEST}, content=generate_latest()
     )

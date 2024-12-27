@@ -13,5 +13,4 @@ repos:
     hooks:
       - id: prettier
         types_or: [javascript, jsx, ts, tsx, markdown, yaml, json]
-        exclude: "admin-frontend/"
         stages: [pre-commit]
