@@ -41,7 +41,7 @@ received_messages_counter = Counter(
 )
 
 
-@on_message().handle()
+@on_message(block=False).handle()
 async def handle_message(bot: Bot):
     received_messages_counter.labels(bot.self_id).inc()
 
