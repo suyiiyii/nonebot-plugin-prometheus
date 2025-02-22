@@ -21,21 +21,23 @@ def handle_startup():
     nonebot_start_at_gauge.set_to_current_time()
 
 
-bot_nums_gauge = Gauge("nonebot_bot_nums", "Total number of bots", ["bot_id"])
+bot_nums_gauge = Gauge(
+    "nonebot_bot_nums", "Total number of bots", ["bot_id", "adapter_name"]
+)
 bot_shutdown_counter = Counter(
-    "nonebot_bot_shutdown", "Total number of bots shutdown", ["bot_id"]
+    "nonebot_bot_shutdown", "Total number of bots shutdown", ["bot_id", "adapter_name"]
 )
 
 
 @driver.on_bot_connect
 async def handle_bot_connect(bot: Bot):
-    bot_nums_gauge.labels(bot.self_id).inc()
+    bot_nums_gauge.labels(bot.self_id, bot.adapter.get_name()).inc()
 
 
 @driver.on_bot_disconnect
 async def handle_bot_disconnect(bot: Bot):
-    bot_nums_gauge.labels(bot.self_id).dec()
-    bot_shutdown_counter.labels(bot.self_id).inc()
+    bot_nums_gauge.labels(bot.self_id, bot.adapter.get_name()).dec()
+    bot_shutdown_counter.labels(bot.self_id, bot.adapter.get_name()).inc()
 
 
 received_messages_counter = Counter(
