@@ -41,24 +41,52 @@ async def handle_bot_disconnect(bot: Bot):
 
 
 received_messages_counter = Counter(
-    "nonebot_received_messages", "Total number of received messages", ["bot_id"]
+    "nonebot_received_messages",
+    "Total number of received messages",
+    ["bot_id", "adapter_name"],
 )
 
 
 @on_message(block=False).handle()
 async def handle_message(bot: Bot):
-    received_messages_counter.labels(bot.self_id).inc()
+    received_messages_counter.labels(bot.self_id, bot.adapter.get_name()).inc()
 
 
 sent_messages_counter = Counter(
-    "nonebot_sent_messages", "Total number of sent messages", ["bot_id", "user_id"]
+    "nonebot_sent_messages",
+    "Total number of sent messages",
+    ["bot_id", "adapter_name", "user_id"],
 )
 
 
 @Bot.on_calling_api
 async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
-    if api == "send_msg":
-        sent_messages_counter.labels(bot.self_id, data["user_id"]).inc()
+    send_msg_apis = {
+        # OneBot v11 https://github.com/nonebot/adapter-onebot/blob/027ee801b947578b19868f6ac9ece110335619e1/nonebot/adapters/onebot/v11/bot.pyi#L72
+        "send_msg",
+        # OneBot v12 https://github.com/nonebot/adapter-onebot/blob/027ee801b947578b19868f6ac9ece110335619e1/nonebot/adapters/onebot/v12/bot.pyi#L183
+        # Telegram https://github.com/nonebot/adapter-telegram/blob/d2b60fbd26ed57f7912191b1a405939b95a4e634/nonebot/adapters/telegram/api.py#L96
+        # Red
+        "send_message",
+        # Discord https://github.com/nonebot/adapter-discord/blob/5794c0b53b4fe1f41726fd09b4db1a5239ef965b/nonebot/adapters/discord/api/client.pyi#L408
+        "create_message",
+        # Dodo
+        "set_channel_message_send",
+        # Feishu
+        "im/v1/messages",
+        "im/v1/images",
+        # QQ
+        "post_messages",
+        "post_group_messages",
+        # Satori
+        "message_create"
+        # Kaiheila
+        "directMessage_create",
+    }
+    if api in send_msg_apis:
+        sent_messages_counter.labels(
+            bot.self_id, bot.adapter.get_name(), data["user_id"]
+        ).inc()
 
 
 matcher_calling_counter = Counter(
