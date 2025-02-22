@@ -2,6 +2,8 @@ from typing import Dict, Any
 
 from nonebot import get_driver
 from nonebot.adapters import Bot
+from nonebot.matcher import Matcher
+from nonebot.message import run_postprocessor
 from nonebot.plugin.on import on_message
 from prometheus_client import Counter, Gauge
 
@@ -55,3 +57,16 @@ sent_messages_counter = Counter(
 async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
     if api == "send_msg":
         sent_messages_counter.labels(bot.self_id, data["user_id"]).inc()
+
+
+matcher_calling_counter = Counter(
+    "nonebot_matcher_calling", "Total number of matcher calling", ["plugin_id"]
+)
+
+
+@run_postprocessor
+async def do_something(matcher: Matcher):
+    if matcher.plugin_id == "nonebot_plugin_prometheus":
+        # 跳过本模块的 matcher
+        return
+    matcher_calling_counter.labels(matcher.plugin_id).inc()
