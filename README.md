@@ -26,6 +26,13 @@ _✨ NoneBot Prometheus 监控插件 ✨_
 - 自动挂载 `/metrics` 路径，提供 Prometheus 监控数据
 - 为其他插件提供统一的数据上报接口
 
+## 📊支持统计的指标
+
+- Bot 在线状态
+- Bot 掉线次数
+- Bot 发送和接受消息次数
+- Matcher 执行次数
+
 ## 📦 安装
 
 - 使用 nb-cli
