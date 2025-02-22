@@ -62,7 +62,9 @@ async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
 
 
 matcher_calling_counter = Counter(
-    "nonebot_matcher_calling", "Total number of matcher calling", ["plugin_id"]
+    "nonebot_matcher_calling",
+    "Total number of matcher calling",
+    ["plugin_id", "matcher_name"],
 )
 
 
@@ -71,4 +73,6 @@ async def do_something(matcher: Matcher):
     if matcher.plugin_id == "nonebot_plugin_prometheus":
         # 跳过本模块的 matcher
         return
-    matcher_calling_counter.labels(matcher.plugin_id).inc()
+    # 因为一般不会给 matcher 命名，这里使用 module_name + line_number 作为 matcher_name
+    matcher_name = f"{matcher.module_name}#L{matcher._source.lineno}"
+    matcher_calling_counter.labels(matcher.plugin_id, matcher_name).inc()
