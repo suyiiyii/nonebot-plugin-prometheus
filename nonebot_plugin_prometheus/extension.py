@@ -8,20 +8,30 @@ from nonebot_plugin_prometheus.metrics import (
 )
 
 
-class MessageCounterExtension(Extension):
+class MessageReceiveCounter(Extension):
     @property
     def priority(self) -> int:
         return 15
 
     @property
     def id(self) -> str:
-        return "MessageCounter"
+        return "MessageReceiveCounter"
 
     async def receive_wrapper(
         self, bot: Bot, event: Event, command: Alconna, receive: UniMessage
     ) -> UniMessage:
         received_messages_counter.labels(bot.self_id, bot.adapter.get_name()).inc()
         return receive
+
+
+class MessageSendCounter(Extension):
+    @property
+    def priority(self) -> int:
+        return 15
+
+    @property
+    def id(self) -> str:
+        return "MessageSendCounter"
 
     async def send_wrapper(
         self, bot: Bot, event: Event, send: Union[str, Message, UniMessage]
