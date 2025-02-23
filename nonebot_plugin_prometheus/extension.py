@@ -20,7 +20,9 @@ class MessageReceiveCounter(Extension):
     async def receive_wrapper(
         self, bot: Bot, event: Event, command: Alconna, receive: UniMessage
     ) -> UniMessage:
-        received_messages_counter.labels(bot.self_id, bot.adapter.get_name()).inc()
+        received_messages_counter.labels(
+            bot.self_id, bot.adapter.get_name(), event.get_user_id()
+        ).inc()
         return receive
 
 

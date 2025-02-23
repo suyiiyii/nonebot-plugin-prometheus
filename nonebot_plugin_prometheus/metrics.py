@@ -44,7 +44,7 @@ async def handle_bot_disconnect(bot: Bot):
 received_messages_counter = Counter(
     "nonebot_received_messages",
     "Total number of received messages",
-    ["bot_id", "adapter_name"],
+    ["bot_id", "adapter_name", "user_id"],
 )
 
 sent_messages_counter = Counter(
