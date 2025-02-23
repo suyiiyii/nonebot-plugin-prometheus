@@ -28,6 +28,7 @@ classifiers = [
 dependencies = [
     "nonebot2>=2.2.1",
     "prometheus-client>=0.21.1",
+    "nonebot-plugin-alconna>=0.55.0",
 ]
 
 [project.urls]
@@ -46,7 +47,8 @@ builtin_plugins = []
 [dependency-groups]
 dev = [
     "nonebot-adapter-onebot>=2.4.6",
-    "nonebot2[fastapi]<3.0.0,>=2.3.3",
+    "nonebot-adapter-telegram>=0.1.0b20",
+    "nonebot2[fastapi,httpx]>=2.3.3,<3.0.0",
     "pre-commit>=4.0.1",
     "ruff>=0.8.4",
 ]
@@ -55,6 +57,9 @@ dev = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.ruff.lint]
+ignore = ["E402"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
