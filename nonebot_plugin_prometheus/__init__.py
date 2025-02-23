@@ -12,7 +12,10 @@ from nonebot_plugin_alconna import Command, add_global_extension
 
 from nonebot_plugin_prometheus import api as api
 from nonebot_plugin_prometheus.config import Config
-from nonebot_plugin_prometheus.extension import MessageCounterExtension
+from nonebot_plugin_prometheus.extension import (
+    MessageSendCounter,
+    MessageReceiveCounter,
+)
 
 __plugin_meta__ = PluginMetadata(
     name="Prometheus 监控",
@@ -26,13 +29,10 @@ __plugin_meta__ = PluginMetadata(
 
 __all__ = [prometheus_client, Counter, Gauge, Histogram, Summary]
 
-add_global_extension(MessageCounterExtension)
+add_global_extension(MessageSendCounter)
 
 metrics = (
     Command("metrics", help_text="查询指标数据")
     .usage(__plugin_meta__.usage)
-    .build(
-        block=True,
-        use_cmd_start=True,
-    )
+    .build(block=True, use_cmd_start=True, extensions=[MessageReceiveCounter()])
 )
