@@ -1,8 +1,12 @@
-from nonebot import get_driver
+import time
+from typing import Optional
+
+from nonebot import get_driver, logger
 from nonebot.adapters import Bot
 from nonebot.matcher import Matcher
 from nonebot.message import run_postprocessor
 from prometheus_client import Counter, Gauge
+from nonebot.message import run_preprocessor
 
 metrics_request_counter = Counter(
     "nonebot_metrics_requests", "Total number of requests"
@@ -52,15 +56,54 @@ sent_messages_counter = Counter(
 matcher_calling_counter = Counter(
     "nonebot_matcher_calling",
     "Total number of matcher calling",
-    ["plugin_id", "matcher_name"],
+    ["plugin_id", "matcher_name", "exception"],
+)
+from prometheus_client import Histogram
+
+matcher_duration_histogram = Histogram(
+    "matcher_duration_seconds",
+    "Histogram of matcher duration in seconds",
+    ["plugin_id", "matcher_name", "exception"],
+    buckets=(
+        0.005,
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        2.5,
+        5.0,
+        7.5,
+        10.0,
+        30.0,
+        60.0,
+    ),
 )
 
 
+@run_preprocessor
+async def handle_preprocessor(matcher: Matcher):
+    matcher.state.update({"_prometheus_start_time": time.time()})
+
+
 @run_postprocessor
-async def do_something(matcher: Matcher):
+async def handle_postprocessor(matcher: Matcher, exception: Optional[Exception]):
     if matcher.plugin_id == "nonebot_plugin_prometheus":
         # 跳过本模块的 matcher
         return
     # 因为一般不会给 matcher 命名，这里使用 module_name + line_number 作为 matcher_name
     matcher_name = f"{matcher.module_name}#L{matcher._source.lineno}"
-    matcher_calling_counter.labels(matcher.plugin_id, matcher_name).inc()
+    has_exception = exception is not None
+    duration = time.time() - matcher.state["_prometheus_start_time"]
+    logger.debug(
+        f"Matcher {matcher_name} duration: {duration}s, has exception {has_exception}"
+    )
+
+    matcher_calling_counter.labels(matcher.plugin_id, matcher_name, has_exception).inc()
+    matcher_duration_histogram.labels(
+        matcher.plugin_id, matcher_name, has_exception
+    ).observe(duration)

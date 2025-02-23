@@ -81,6 +81,10 @@ request_counter = Counter(
 request_counter.inc()
 ```
 
+> **Tips**
+>
+> 为了统计 matcher 运行时间，本插件会自动在 `Matcher.state` 中插入 `_prometheus_start_time` 字段。
+
 ## 🔧配置
 
 ```ini
