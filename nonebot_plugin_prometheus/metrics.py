@@ -61,7 +61,7 @@ matcher_calling_counter = Counter(
 from prometheus_client import Histogram
 
 matcher_duration_histogram = Histogram(
-    "matcher_duration_seconds",
+    "nonebot_matcher_duration_seconds",
     "Histogram of matcher duration in seconds",
     ["plugin_id", "matcher_name", "exception"],
     buckets=(
