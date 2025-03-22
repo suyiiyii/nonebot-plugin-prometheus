@@ -1,18 +1,19 @@
 import time
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from nonebot import get_driver, logger
 from nonebot.adapters import Bot
-from nonebot.matcher import Matcher
+from nonebot.matcher import Matcher, current_event
 from nonebot.message import run_postprocessor
 from prometheus_client import Counter, Gauge
 from nonebot.message import run_preprocessor
 
+driver = get_driver()
+send_msg_apis = ["send", "post", "create", "im/v1/messages", "im/v1/images"]
+
 metrics_request_counter = Counter(
     "nonebot_metrics_requests", "Total number of requests"
 )
-
-driver = get_driver()
 
 nonebot_start_at_gauge = Gauge("nonebot_start_at", "Start time of the bot")
 
@@ -52,6 +53,18 @@ sent_messages_counter = Counter(
     "Total number of sent messages",
     ["bot_id", "adapter_name", "user_id"],
 )
+
+
+@Bot.on_calling_api
+async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
+    if not set(api.split("_")).intersection(send_msg_apis):
+        return
+
+    event = current_event.get()
+    sent_messages_counter.labels(
+        bot.self_id, bot.adapter.get_name(), event.get_user_id()
+    ).inc()
+
 
 matcher_calling_counter = Counter(
     "nonebot_matcher_calling",
