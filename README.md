@@ -21,6 +21,7 @@ _✨ NoneBot Prometheus 监控插件 ✨_
   </a>
 </p>
 
+
 ## ✨功能
 
 - 自动挂载 `/metrics` 路径，提供 Prometheus 监控数据
@@ -32,6 +33,11 @@ _✨ NoneBot Prometheus 监控插件 ✨_
 - Bot 掉线次数
 - Bot 发送和接受消息次数
 - Matcher 执行次数
+
+## ♿官方提供 Grafana 面板
+[23060](https://grafana.com/grafana/dashboards/23060-nonebot-status-overview/)
+
+![图片](https://github.com/user-attachments/assets/641d8637-cca8-462e-99ed-96eac6588086)
 
 ## 📦 安装
 
@@ -100,6 +106,7 @@ prometheus_metrics_path = "/metrics"
 
 ## 📝TODO
 
+- 提供快速上手 docker compose 文件
 - 支持通过对话查询指标数据
 
 ## 相关仓库
