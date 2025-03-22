@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-prometheus"
-version = "0.3.12"
+version = "0.3.13"
 description = "为 NoneBot 和其他插件提供 Prometheus 监控支持"
 readme = "README.md"
 requires-python = ">=3.9, <4.0"
