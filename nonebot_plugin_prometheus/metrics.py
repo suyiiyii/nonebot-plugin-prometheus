@@ -59,10 +59,14 @@ sent_messages_counter = Counter(
 async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
     if not set(api.split("_")).intersection(send_msg_apis):
         return
-
-    event = current_event.get()
+    try:
+        event = current_event.get()
+        user_id = event.get_user_id()
+    except LookupError:
+        # bot 主动发送消息的情况，无对应的 event，暂时使用 unknown 作为 user_id
+        user_id = "unknown"
     sent_messages_counter.labels(
-        bot.self_id, bot.adapter.get_name(), event.get_user_id()
+        bot.self_id, bot.adapter.get_name(), user_id
     ).inc()
 
 
