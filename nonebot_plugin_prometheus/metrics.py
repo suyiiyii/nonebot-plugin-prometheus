@@ -60,10 +60,14 @@ async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
     if not set(api.split("_")).intersection(send_msg_apis):
         return
 
-    event = current_event.get()
-    sent_messages_counter.labels(
-        bot.self_id, bot.adapter.get_name(), event.get_user_id()
-    ).inc()
+    try:
+        event = current_event.get()
+        sent_messages_counter.labels(
+            bot.self_id, bot.adapter.get_name(), event.get_user_id()
+        ).inc()
+    except LookupError:
+        pass
+        # 若未获取到 event，说明为用户主动发送消息，不属于统计范围
 
 
 matcher_calling_counter = Counter(
