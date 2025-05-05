@@ -7,6 +7,8 @@ from nonebot.matcher import Matcher, current_event
 from nonebot.message import run_postprocessor, run_preprocessor
 from prometheus_client import Counter, Gauge, Histogram
 
+from nonebot_plugin_prometheus.utils import MAGIC_PRIORITY
+
 driver = get_driver()
 send_msg_apis = ["send", "post", "create", "im/v1/messages", "im/v1/images"]
 
@@ -110,7 +112,7 @@ async def handle_preprocessor(matcher: Matcher):
 
 @run_postprocessor
 async def handle_postprocessor(matcher: Matcher, exception: Optional[Exception]):
-    if matcher.plugin_id == "nonebot_plugin_prometheus":
+    if matcher.plugin_id == "nonebot_plugin_prometheus" and matcher.priority != MAGIC_PRIORITY:
         # 跳过本模块的 matcher
         return
     # 因为一般不会给 matcher 命名，这里使用 module_name + line_number 作为 matcher_name
