@@ -32,11 +32,13 @@ bot_shutdown_counter = Counter(
 
 @driver.on_bot_connect
 async def handle_bot_connect(bot: Bot):
+    logger.trace(f"Bot {bot.adapter.get_name()} {bot.self_id} online")
     bot_nums_gauge.labels(bot.self_id, bot.adapter.get_name()).inc()
 
 
 @driver.on_bot_disconnect
 async def handle_bot_disconnect(bot: Bot):
+    logger.trace(f"Bot {bot.adapter.get_name()} {bot.self_id} offline")
     bot_nums_gauge.labels(bot.self_id, bot.adapter.get_name()).dec()
     bot_shutdown_counter.labels(bot.self_id, bot.adapter.get_name()).inc()
 
@@ -64,6 +66,7 @@ async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
     except LookupError:
         # bot 主动发送消息的情况，无对应的 event，暂时使用 unknown 作为 user_id
         user_id = "unknown"
+    logger.trace(f"Bot {bot.adapter.get_name()} {bot.self_id} sent msg")
     sent_messages_counter.labels(
         bot.self_id, bot.adapter.get_name(), user_id
     ).inc()
