@@ -4,9 +4,8 @@ from typing import Any, Dict, Optional
 from nonebot import get_driver, logger
 from nonebot.adapters import Bot
 from nonebot.matcher import Matcher, current_event
-from nonebot.message import run_postprocessor
-from prometheus_client import Counter, Gauge
-from nonebot.message import run_preprocessor
+from nonebot.message import run_postprocessor, run_preprocessor
+from prometheus_client import Counter, Gauge, Histogram
 
 driver = get_driver()
 send_msg_apis = ["send", "post", "create", "im/v1/messages", "im/v1/images"]
@@ -75,7 +74,6 @@ matcher_calling_counter = Counter(
     "Total number of matcher calling",
     ["plugin_id", "matcher_name", "exception"],
 )
-from prometheus_client import Histogram
 
 matcher_duration_histogram = Histogram(
     "nonebot_matcher_duration_seconds",
