@@ -33,6 +33,7 @@ _✨ NoneBot Prometheus 监控插件 ✨_
 - Bot 掉线次数
 - Bot 发送和接受消息次数
 - Matcher 执行次数
+- Matcher 执行耗时分布
 
 ## ♿官方提供 Grafana 面板
 [23060](https://grafana.com/grafana/dashboards/23060-nonebot-status-overview/)
@@ -95,9 +96,9 @@ request_counter.inc()
 
 ```ini
 # 是否开启 Prometheus 插件
-prometheus_enable = True
+PROMETHEUS_ENABLE=true
 # Prometheus 挂载地址
-prometheus_metrics_path = "/metrics"
+PROMETHEUS_METRICS_PATH=/metrics
 ```
 
 > **Note**
