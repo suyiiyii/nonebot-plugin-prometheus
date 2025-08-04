@@ -120,7 +120,8 @@ async def handle_postprocessor(matcher: Matcher, exception: Optional[Exception])
         # 跳过本模块的 matcher
         return
     # 因为一般不会给 matcher 命名，这里使用 module_name + line_number 作为 matcher_name
-    matcher_name = f"{matcher.module_name}#L{matcher._source.lineno}"
+    lineno = getattr(getattr(matcher, "_source", None), "lineno", "unknown")
+    matcher_name = f"{matcher.module_name}#L{lineno}"
     has_exception = exception is not None
     duration = time.time() - matcher.state["_prometheus_start_time"]
     logger.debug(
