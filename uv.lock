@@ -513,7 +513,7 @@ wheels = [
 
 [[package]]
 name = "nonebot-plugin-prometheus"
-version = "0.3.15"
+version = "0.3.16"
 source = { editable = "." }
 dependencies = [
     { name = "nonebot-plugin-alconna" },

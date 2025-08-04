@@ -68,9 +68,10 @@ async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
     except LookupError:
         # bot 主动发送消息的情况，无对应的 event，暂时使用 unknown 作为 user_id
         user_id = "unknown"
-    except ValueError:
+    except Exception as e:
         # 某些 event 类型（如 Discord 的 ApplicationCommandInteractionEvent）无法获取 user_id
         user_id = "-1"
+        logger.debug(f"Get user_id failed: {e}")
     logger.trace(f"Bot {bot.adapter.get_name()} {bot.self_id} sent msg")
     sent_messages_counter.labels(
         bot.self_id, bot.adapter.get_name(), user_id
