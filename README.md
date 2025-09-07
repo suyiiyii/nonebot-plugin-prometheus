@@ -26,6 +26,8 @@ _✨ NoneBot Prometheus 监控插件 ✨_
 
 - 自动挂载 `/metrics` 路径，提供 Prometheus 监控数据
 - 为其他插件提供统一的数据上报接口
+- **新增**：支持通过对话查询指标数据
+- **新增**：提供通用指标查询接口，支持任意已注册指标的查询
 
 ## 📊支持统计的指标
 
@@ -105,10 +107,100 @@ PROMETHEUS_METRICS_PATH=/metrics
 >
 > 使用插件需要支持 ASGI 的驱动器，例如 `fastapi`
 
+## 💬对话查询功能
+
+本插件现在支持通过对话命令查询指标数据，方便在聊天中快速查看监控信息。
+
+### 基础命令
+
+```bash
+# 查看系统概览
+/metrics
+
+# 查看机器人状态
+/metrics status
+
+# 查看消息统计
+/metrics messages
+
+# 查看匹配器统计
+/metrics matchers
+
+# 查看系统指标
+/metrics system
+
+# 查看运行时间
+/metrics uptime
+
+# 查看帮助
+/metrics help
+```
+
+### 通用指标查询
+
+**新增**：支持查询任意已注册的 Prometheus 指标：
+
+```bash
+# 查询特定指标
+/metrics query nonebot_received_messages
+
+# 带标签过滤的查询
+/metrics query nonebot_received_messages{bot_id="123456"}
+
+# 列出所有可用指标
+/metrics list
+
+# 搜索包含关键字的指标
+/metrics search matcher
+```
+
+### 查询示例
+
+```bash
+# 查看接收消息总数
+/metrics query nonebot_received_messages
+
+# 查看特定机器人的消息统计
+/metrics query nonebot_received_messages{bot_id="72075954", adapter_name="Telegram"}
+
+# 查看匹配器执行情况
+/metrics query nonebot_matcher_calls_total
+
+# 搜索所有与匹配器相关的指标
+/metrics search matcher
+```
+
+### 输出格式
+
+查询结果会以格式化的方式显示，包含：
+- 指标类型和描述
+- 标签信息
+- 指标值
+- 适当的单位格式化（如 K、M、B 等）
+
+## 🔧开发者接口
+
+除了对话查询，本插件还提供了编程接口供其他插件使用：
+
+```python
+from nonebot_plugin_prometheus.registry import (
+    get_metrics,           # 获取所有指标
+    get_metrics_by_name,   # 按名称获取指标
+    get_metric_values,     # 获取指标值
+    list_all_metrics,      # 列出所有指标
+    search_metrics,        # 搜索指标
+    parse_metric_filter,   # 解析查询字符串
+)
+
+# 示例：获取特定指标的值
+values = get_metric_values("nonebot_received_messages", {"bot_id": "123456"})
+for labels, value in values:
+    print(f"Labels: {labels}, Value: {value}")
+```
+
 ## 📝TODO
 
 - 提供快速上手 docker compose 文件
-- 支持通过对话查询指标数据
 
 ## 相关仓库
 
