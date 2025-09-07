@@ -44,7 +44,7 @@ def get_bot_status() -> Dict[str, Any]:
         
         # 获取掉线次数
         shutdown_samples = list(bot_shutdown_counter.collect())[0].samples
-        shutdown_counts = {sample.labels['bot_id']: sample.value for sample in shutdown_samples}
+        shutdown_counts = {sample.labels['bot_id']: int(sample.value) for sample in shutdown_samples if "_total" in sample.name}
         
         status_info = {
             "total_bots": len(online_bots),
