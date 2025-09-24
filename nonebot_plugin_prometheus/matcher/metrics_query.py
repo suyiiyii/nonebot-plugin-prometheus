@@ -1,5 +1,6 @@
-from nonebot import on_command, logger
-from nonebot.adapters import Message, Bot, Event
+from nonebot import logger, on_command
+from nonebot.adapters import Bot, Event, Message
+from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from nonebot.matcher import Matcher
 
@@ -13,21 +14,21 @@ from nonebot_plugin_prometheus.formatter import (
     format_overview,
     format_system_metrics,
 )
+from nonebot_plugin_prometheus.metrics import received_messages_counter
 from nonebot_plugin_prometheus.query import (
+    format_large_number,
     get_bot_status,
     get_matcher_stats,
     get_message_stats,
     get_system_metrics,
-    format_large_number,
 )
 from nonebot_plugin_prometheus.registry import (
+    get_metric_values,
     get_metrics_by_name,
     list_all_metrics,
-    search_metrics,
     parse_metric_filter,
-    get_metric_values,
+    search_metrics,
 )
-from nonebot_plugin_prometheus.metrics import received_messages_counter
 from nonebot_plugin_prometheus.utils import MAGIC_PRIORITY
 
 # 创建 metrics 命令处理器 (传统 on_command，用于对话查询)
@@ -40,20 +41,24 @@ metrics_query = on_command(
 
 
 @metrics_query.handle()
-async def handle_metrics_query(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
+async def handle_metrics_query(
+    bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()
+):
     """处理 metrics 查询命令"""
     # 处理消息计数
     try:
-        logger.trace(f"Bot {bot.adapter.get_name()} {bot.self_id} received metrics command")
+        logger.trace(
+            f"Bot {bot.adapter.get_name()} {bot.self_id} received metrics command"
+        )
         received_messages_counter.labels(
             bot.self_id, bot.adapter.get_name(), event.get_user_id()
         ).inc()
     except Exception as e:
         logger.debug(f"Count received message failed: {e}")
-    
+
     # 获取命令参数
     arg_text = args.extract_plain_text().strip().lower()
-    
+
     # 根据参数处理不同的查询类型
     if not arg_text or arg_text in ["", "overview", "概览"]:
         # 显示系统概览
@@ -101,9 +106,11 @@ async def handle_overview(matcher: Matcher):
         message_stats = get_message_stats()
         matcher_stats = get_matcher_stats(limit=5)
         system_metrics = get_system_metrics()
-        
+
         # 格式化概览
-        overview_text = format_overview(bot_status, message_stats, matcher_stats, system_metrics)
+        overview_text = format_overview(
+            bot_status, message_stats, matcher_stats, system_metrics
+        )
         await matcher.send(overview_text)
     except Exception as e:
         await matcher.send(f"❌ 获取系统概览失败: {str(e)}")
@@ -179,7 +186,7 @@ async def handle_query(matcher: Matcher, metric_query: str):
     try:
         # 解析查询字符串
         metric_name, labels = parse_metric_filter(metric_query)
-        
+
         # 获取指标数据
         if labels:
             # 如果有标签过滤，使用 get_metric_values
@@ -187,26 +194,26 @@ async def handle_query(matcher: Matcher, metric_query: str):
             if not metric_values:
                 await matcher.send(f"❌ 未找到匹配的指标: {metric_query}")
                 return
-            
+
             # 构建结果
             result = f"📊 指标查询: {metric_query}\n"
             result += "=" * 50 + "\n"
-            
+
             for sample_labels, value in metric_values:
                 if sample_labels:
-                    labels_str = ", ".join([f"{k}=\"{v}\"" for k, v in sample_labels])
+                    labels_str = ", ".join([f'{k}="{v}"' for k, v in sample_labels])
                     result += f"   📌 {labels_str}\n"
                 else:
                     result += "   📌 (无标签)\n"
                 result += f"      值: {format_large_number(value)}\n"
-            
+
             await matcher.send(result)
         else:
             # 如果没有标签过滤，使用 get_metrics_by_name
             metric_data = get_metrics_by_name(metric_name)
             result_text = format_custom_metric(metric_name, metric_data)
             await matcher.send(result_text)
-            
+
     except Exception as e:
         await matcher.send(f"❌ 查询指标失败: {str(e)}")
 
@@ -228,7 +235,7 @@ async def handle_search(matcher: Matcher, keyword: str):
         if not matched_metrics:
             await matcher.send(f"❌ 未找到包含 '{keyword}' 的指标")
             return
-        
+
         title = f"🔍 搜索结果: '{keyword}'"
         result_text = format_metrics_list(matched_metrics, title)
         await matcher.send(result_text)

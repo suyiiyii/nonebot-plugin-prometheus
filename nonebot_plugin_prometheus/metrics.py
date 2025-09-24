@@ -73,9 +73,7 @@ async def handle_api_call(bot: Bot, api: str, data: Dict[str, Any]):
         user_id = "-1"
         logger.debug(f"Get user_id failed: {e}")
     logger.trace(f"Bot {bot.adapter.get_name()} {bot.self_id} sent msg")
-    sent_messages_counter.labels(
-        bot.self_id, bot.adapter.get_name(), user_id
-    ).inc()
+    sent_messages_counter.labels(bot.self_id, bot.adapter.get_name(), user_id).inc()
 
 
 matcher_calling_counter = Counter(
@@ -116,7 +114,10 @@ async def handle_preprocessor(matcher: Matcher):
 
 @run_postprocessor
 async def handle_postprocessor(matcher: Matcher, exception: Optional[Exception]):
-    if matcher.plugin_id == "nonebot_plugin_prometheus" and matcher.priority != MAGIC_PRIORITY:
+    if (
+        matcher.plugin_id == "nonebot_plugin_prometheus"
+        and matcher.priority != MAGIC_PRIORITY
+    ):
         # 跳过本模块的 matcher
         return
     # 因为一般不会给 matcher 命名，这里使用 module_name + line_number 作为 matcher_name
