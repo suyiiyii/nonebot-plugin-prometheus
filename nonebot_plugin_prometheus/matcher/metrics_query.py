@@ -2,8 +2,9 @@ from nonebot import logger, on_command
 from nonebot.adapters import Bot, Event, Message
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
-from nonebot.matcher import Matcher
+from nonebot.permission import SUPERUSER
 
+from nonebot_plugin_prometheus.config import plugin_config
 from nonebot_plugin_prometheus.formatter import (
     format_bot_status,
     format_custom_metric,
@@ -33,10 +34,11 @@ from nonebot_plugin_prometheus.utils import MAGIC_PRIORITY
 
 # 创建 metrics 命令处理器 (传统 on_command，用于对话查询)
 metrics_query = on_command(
-    "metrics", 
-    aliases={"查询指标", "监控数据"}, 
+    "metrics",
+    aliases={"查询指标", "监控数据"},
     priority=MAGIC_PRIORITY + 1,  # 使用不同优先级避免冲突
-    block=True
+    block=True,
+    permission=SUPERUSER if plugin_config.prometheus_chat_needs_admin else None,
 )
 
 

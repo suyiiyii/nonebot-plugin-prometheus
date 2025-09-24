@@ -101,6 +101,8 @@ request_counter.inc()
 PROMETHEUS_ENABLE=true
 # Prometheus 挂载地址
 PROMETHEUS_METRICS_PATH=/metrics
+# 是否需要管理员权限才能使用聊天查询功能（默认: true）
+PROMETHEUS_CHAT_NEEDS_ADMIN=true
 ```
 
 > **Note**
@@ -110,6 +112,13 @@ PROMETHEUS_METRICS_PATH=/metrics
 ## 💬对话查询功能
 
 本插件现在支持通过对话命令查询指标数据，方便在聊天中快速查看监控信息。
+
+### 权限控制
+
+- **默认权限要求**：只有超级用户（SUPERUSER）可以使用查询命令
+- **配置控制**：通过 `PROMETHEUS_CHAT_NEEDS_ADMIN` 配置项控制权限要求
+  - `true`（默认）：仅超级用户可用
+  - `false`：所有用户都可使用
 
 ### 基础命令
 
