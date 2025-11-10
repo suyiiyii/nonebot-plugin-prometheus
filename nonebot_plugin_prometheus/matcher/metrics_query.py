@@ -1,4 +1,4 @@
-from nonebot import logger, on_command
+from nonebot import on_command
 from nonebot.adapters import Bot, Event, Message
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -15,7 +15,6 @@ from nonebot_plugin_prometheus.formatter import (
     format_overview,
     format_system_metrics,
 )
-from nonebot_plugin_prometheus.metrics import received_messages_counter
 from nonebot_plugin_prometheus.query import (
     format_large_number,
     get_bot_status,
@@ -47,17 +46,6 @@ async def handle_metrics_query(
     bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()
 ):
     """处理 metrics 查询命令"""
-    # 处理消息计数
-    try:
-        logger.trace(
-            f"Bot {bot.adapter.get_name()} {bot.self_id} received metrics command"
-        )
-        received_messages_counter.labels(
-            bot.self_id, bot.adapter.get_name(), event.get_user_id()
-        ).inc()
-    except Exception as e:
-        logger.debug(f"Count received message failed: {e}")
-
     # 获取命令参数
     arg_text = args.extract_plain_text().strip().lower()
 
